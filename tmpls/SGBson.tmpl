@@ -1,0 +1,45 @@
+func (this *{{str}}) UnmarshalJSON(b []byte) error {
+    if reti, ok := stringInSlice(string(b), {{lst}}); ok {
+        *this = {{str}}(reti)
+    } else {
+        return errors.New("Out of range in SetBSON")
+    }
+    return nil
+}
+
+func (this {{str}}) MarshalJSON() ([]byte, error) {
+    return []byte({{lst}}[this]), nil
+}
+
+func (this *{{str}}) SetBSON(raw bson.Raw) error {
+    var res string
+    if err := raw.Unmarshal(&res); err != nil {
+        return errors.New("Error unmarshal in SetBSON" + err.Error())
+    } else {
+        if reti, ok := stringInSlice(res, {{lst}}); !ok {
+            return errors.New("Out of range in SetBSON")
+        } else {
+            *this = {{str}}(reti)
+            return nil
+        }
+    }
+}
+
+func (this {{str}}) GetBSON() (interface{}, error) {
+    var i = int(this)-1
+    if i < len({{lst}}) && i > -1 {
+        return {{lst}}[i], nil
+    } else {
+        return nil, errors.New("Out of range in GetBSON")
+    }
+}
+
+func (this {{str}}) String() string {
+    var i = int(this)
+    if i < len({{lst}}) && i > -1 {
+        return {{lst}}[i]
+    } else {
+        return ""
+    }
+}
+
