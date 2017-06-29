@@ -11,4 +11,10 @@ var _ = API("CCAccounting", func() {
 	BasePath("/api/v1")
 	Host("localhost:3451")
 	Scheme("http")
+	Consumes("application/json", func() {
+		Package("github.com/goadesign/goa/encoding/json")
+	})
+	Produces("application/json", func() {
+		Package("github.com/goadesign/goa/encoding/json")
+	})
 })

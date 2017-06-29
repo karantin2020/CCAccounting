@@ -3,8 +3,6 @@ package design
 import (
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
-
-	"github.com/karantin2020/CCAccounting/types"
 )
 
 var _ = Resource("journal", func() {
@@ -14,13 +12,13 @@ var _ = Resource("journal", func() {
 		Routing(POST("/"))
 		Description("Upload journal")
 		Response(OK, UploadJournalMedia)
-		Resource(BadRequest, UploadErrorMedia)
+		Response(BadRequest, UploadErrorMedia)
 	})
 
 	Action("show", func() {
 		Routing(GET("/"))
 		Description("Show all stored info")
-		Response(OK, CollectionOf(types.CancBookV1))
+		Response(OK, CollectionOf(CancBookV1))
 		Response(NotFound)
 	})
 })
@@ -33,5 +31,22 @@ var UploadJournalMedia = MediaType("application/vnd.upload.journal", func() {
 		Attribute("rows", Integer, "Number of inserted rows")
 		Attribute("uploaded_at", DateTime, "Upload timestamp")
 		Required("filename", "rows", "uploaded_at")
+	})
+	View("default", func() {
+		Attribute("filename")
+		Attribute("rows")
+		Attribute("uploaded_at")
+	})
+})
+
+var CancBookV1 = MediaType("application/vnd.journal.cancbookv1", func() {
+	Description("CancBookV1 struct")
+	TypeName("CancBookV1")
+	Attributes(func() {
+		Attribute("ID", String, "ID of field")
+		Required("ID")
+	})
+	View("default", func() {
+		Attribute("ID")
 	})
 })

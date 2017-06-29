@@ -3,8 +3,6 @@ package design
 import (
 	. "github.com/goadesign/goa/design"
 	. "github.com/goadesign/goa/design/apidsl"
-
-	"github.com/karantin2020/CCAccounting/types"
 )
 
 var UploadErrorMedia = MediaType("application/vnd.upload.error", func() {
@@ -14,6 +12,11 @@ var UploadErrorMedia = MediaType("application/vnd.upload.error", func() {
 		Attribute("filename", String, "Uploaded file name")
 		Attribute("uploaded_at", DateTime, "Upload timestamp")
 		Attribute("description", String, "Error description")
-		Required("filename", "rows", "uploaded_at")
+		Required("filename", "uploaded_at", "description")
+	})
+	View("default", func() {
+		Attribute("filename")
+		Attribute("uploaded_at")
+		Attribute("description")
 	})
 })
